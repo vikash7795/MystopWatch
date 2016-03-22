@@ -10,6 +10,8 @@ public class MainActivity extends Activity {
     private int seconds = 0;
     //Is the stopwatch running?
     private boolean running;
+    //storing the value for onstart
+    private boolean wasRunning;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -17,8 +19,22 @@ public class MainActivity extends Activity {
         if (savedInstanceState != null) {
             seconds = savedInstanceState.getInt("seconds");
             running = savedInstanceState.getBoolean("running");
+            wasRunning = savedInstanceState.getBoolean("wasRunning");
         }
         runTimer();
+    }
+    @Override
+    protected void onStop() {
+        super.onStop();
+        wasRunning = running;
+        running = false;
+    }
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (wasRunning) {
+            running = true;
+        }
     }
     //Start the stopwatch running when the Start button is clicked.
     public void onClickStart(View view) {
@@ -32,8 +48,9 @@ public class MainActivity extends Activity {
     //saving screen orientation changes
     @Override
     public void onSaveInstanceState(Bundle b) {
-       b.putInt("seconds", seconds);
-      b.putBoolean("running", running);
+        b.putInt("seconds", seconds);
+        b.putBoolean("running", running);
+      b.putBoolean("wasRunning", wasRunning);
     }
     //destroy the activity
 
