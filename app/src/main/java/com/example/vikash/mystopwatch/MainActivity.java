@@ -14,6 +14,10 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        if (savedInstanceState != null) {
+            seconds = savedInstanceState.getInt("seconds");
+            running = savedInstanceState.getBoolean("running");
+        }
         runTimer();
     }
     //Start the stopwatch running when the Start button is clicked.
@@ -24,6 +28,12 @@ public class MainActivity extends Activity {
     public void onClickStop(View view) {
         running = false;
 
+    }
+    //saving screen orientation changes
+    @Override
+    public void onSaveInstanceState(Bundle b) {
+       b.putInt("seconds", seconds);
+      b.putBoolean("running", running);
     }
     //destroy the activity
 
